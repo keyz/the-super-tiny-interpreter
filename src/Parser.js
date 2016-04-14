@@ -3,7 +3,7 @@
  * Let's just borrow it from babel.
  */
 import { parse as bParse } from 'babylon';
-import { isObject } from './utils';
+import { isObject, mapFilterObject } from './utils';
 
 const defaultOptions = {
   sourceType: 'script',
@@ -21,24 +21,20 @@ const astStripList = [
 ];
 
 /*
- * We don't care about line numbers and source locations for now -- let's clean them up.
+ * We don't care about line numbers nor source locations for now -- let's clean them up.
  * The correct way to implement this AST traversal is to use the visitor pattern.
  * See https://github.com/thejameskyle/babel-handbook/blob/master/translations/en/plugin-handbook.md#traversal
  */
 const cleanupAst = (target) => {
   if (isObject(target)) {
-    const fields = Object.keys(target);
+    return mapFilterObject(target, (val, key) => {
+      if (astStripList.includes(key)) {
+        return false;
+      }
 
-    return fields.reduce(
-      (res, fieldName) => {
-        if (astStripList.indexOf(fieldName) === -1) {
-          res[fieldName] = cleanupAst(target[fieldName]); // eslint-disable-line no-param-reassign
-        }
-
-        return res;
-      },
-      {},
-    );
+      const newVal = cleanupAst(val);
+      return [ key, newVal ];
+    });
   } else if (Array.isArray(target)) {
     return target.map(cleanupAst);
   }

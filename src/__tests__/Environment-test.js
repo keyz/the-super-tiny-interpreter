@@ -1,4 +1,4 @@
-jest.unmock('../Environment').unmock('immutable');
+jest.disableAutomock();
 
 const {
   emptyEnv,

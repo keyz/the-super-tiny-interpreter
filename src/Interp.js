@@ -1,17 +1,16 @@
 /*
-  Welcome to the interpreter!
-  It only supports the following expressions and statements:
-  - numbers
-  - booleans
-  - variables
-  - if statements
-  - function expression
-  - function calls
-  - +, -, *, /
-*/
+ * Welcome to the interpreter!
 
-import { parse } from './Parser';
-import { readFile } from './Reader';
+ * It only supports the following expressions and statements:
+ * - numbers
+ * - booleans
+ * - variables
+ * - if statements
+ * - function expression
+ * - function calls
+ * - `+`, `-`, `*`, `/`
+ */
+
 import {
   emptyEnv,
   lookupEnv,
@@ -22,9 +21,6 @@ import {
   makeClosure,
   applyClosure,
 } from './Closure';
-
-const code = readFile('../samples/adder.js');
-const ast = parse(code);
 
 const expInterp = (exp, env) => {
   switch (exp.type) {
@@ -47,6 +43,10 @@ const expInterp = (exp, env) => {
       return { val, env };
     }
     case 'NumericLiteral': {
+      const { value: val } = exp;
+      return { val, env };
+    }
+    case 'BooleanLiteral': {
       const { value: val } = exp;
       return { val, env };
     }
@@ -106,7 +106,7 @@ const blockStatementInterp = (exp, env) => {
   }
 };
 
-const programInterp = (exp, env) => {
+const programInterp = (exp, env = emptyEnv) => {
   switch (exp.type) {
     case 'Program': {
       const { val } = exp.body.reduce(
@@ -121,4 +121,4 @@ const programInterp = (exp, env) => {
   }
 };
 
-console.log(programInterp(ast, emptyEnv));
+export { programInterp };

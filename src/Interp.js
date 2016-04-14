@@ -78,7 +78,7 @@ const expInterp = (exp, env) => {
       }
     }
     default: {
-      throw new Error(`unsupported type ${exp.type}`);
+      throw new Error(`unsupported expression type ${exp.type}`);
     }
   }
 };

@@ -46,7 +46,6 @@ const interp = (exp, env) => {
 
     case 'CallExpression': {
       const { callee, arguments: rawArgs } = exp;
-
       // here we recur on both sides
       const closure = interp(callee, env);
       const vals = rawArgs.map((obj) => interp(obj, env));

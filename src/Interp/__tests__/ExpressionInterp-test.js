@@ -11,6 +11,8 @@ const {
   // batchExtendEnv,
 } = require('../../Environment');
 
+import { makeClosure } from '../../Closure';
+
 const parseAndgetExp = (code) => parse(code).body[0].expression;
 
 const interpExp = (code) => interp(parseAndgetExp(code), emptyEnv);
@@ -80,23 +82,23 @@ describe('Interp', () => {
   });
 
   it('ArrowFunctionExpression', () => {
-    expect(interpExpWithEnv('() => 3', emptyEnv)).toEqual({
-      args: [],
-      body: parseAndgetExp('3'),
-      env: emptyEnv,
-    });
+    expect(interpExpWithEnv('() => 3', emptyEnv)).toEqual(makeClosure(
+      [],
+      parseAndgetExp('3'),
+      emptyEnv,
+    ));
 
-    expect(interpExpWithEnv('() => 3 + 12', emptyEnv)).toEqual({
-      args: [],
-      body: parseAndgetExp('3 + 12'),
-      env: emptyEnv,
-    });
+    expect(interpExpWithEnv('() => 3 + 12', emptyEnv)).toEqual(makeClosure(
+      [],
+      parseAndgetExp('3 + 12'),
+      emptyEnv,
+    ));
 
-    expect(interpExpWithEnv('(x) => x + 12', emptyEnv)).toEqual({
-      args: [ 'x' ],
-      body: parseAndgetExp('x + 12'),
-      env: emptyEnv,
-    });
+    expect(interpExpWithEnv('(x) => fact(x + 12)', emptyEnv)).toEqual(makeClosure(
+      [ 'x' ],
+      parseAndgetExp('fact(x + 12)'),
+      emptyEnv,
+    ));
   });
 
   it('CallExpression', () => {
@@ -160,4 +162,37 @@ describe('Interp', () => {
       return add3(39);
     })());
   });
+
+//   it('should support basic recursion', () => {
+//     expect(interpExp(`(() => {
+//       const fact = (x) => (x === 1 ? 1 : x * fact(x - 1));
+// //      return fact(5);
+//     })()`)).toBe((() => {
+//       const fact = (x) => (x === 1 ? 1 : x * fact(x - 1));
+// //      return fact(5);
+//     })());
+//   });
+
+
+  // it('IfStatement', () => {
+  //   expect(interpExp(`(() => {
+  //     const foo = 12;
+  //     if (foo > 24) {
+  //       return -20;
+  //     } else if (foo < 25) {
+  //       return -12;
+  //     } else { // eslint-disable-line no-else-return
+  //       return 1000;
+  //     }
+  //   })()`)).toBe((() => {
+  //     const foo = 12;
+  //     if (foo > 24) {
+  //       return -20;
+  //     } else if (foo < 25) {
+  //       return -12;
+  //     } else { // eslint-disable-line no-else-return
+  //       return 1000;
+  //     }
+  //   })());
+  // });
 });

@@ -1,3 +1,6 @@
+/*
+ * https://github.com/estree/estree/blob/master/spec.md#statements
+ */
 import invariant from 'fbjs/lib/invariant';
 
 import { interp as expInterp } from './ExpressionInterp';
@@ -10,6 +13,11 @@ const interp = (exp, env) => {
       for (let i = 0; i < exp.body.length; i++) {
         const currentExp = exp.body[i];
         switch (currentExp.type) {
+          case 'ExpressionStatement': {
+            expInterp(currentExp.expression, currentEnv);
+            continue;
+          }
+
           case 'ReturnStatement': {
             const { argument } = currentExp;
 
@@ -18,7 +26,6 @@ const interp = (exp, env) => {
 
           case 'VariableDeclaration': {
             const { kind, declarations } = currentExp;
-
             invariant(
               kind === 'const',
               `unsupported VariableDeclaration kind ${kind}`,
@@ -33,10 +40,15 @@ const interp = (exp, env) => {
             continue;
           }
 
-          case 'ExpressionStatement': {
-            expInterp(currentExp.expression, currentEnv);
-            continue;
-          }
+          // @TODO need to return return in ifs
+          // case 'IfStatement': {
+          //   const { alternate, consequent, test } = currentExp;
+          //   const testVal = expInterp(test, currentEnv);
+          //   return currentExp;
+          //   if (testVal) {
+          //
+          //   }
+          // }
 
           default: {
             throw new Error(`unsupported BlockStatement type ${currentExp.type}`);

@@ -1,4 +1,7 @@
+import invariant from 'fbjs/lib/invariant';
+
 import { batchExtendEnv } from './Environment';
+const CLOSURE_TYPE_FLAG = Symbol('CLOSURE_TYPE_FLAG');
 
 /*
  * As we've said,
@@ -6,6 +9,7 @@ import { batchExtendEnv } from './Environment';
  * Here we represent a closure simply as a plain object.
  */
 const makeClosure = (args, body, defineTimeEnv) => ({
+  type: CLOSURE_TYPE_FLAG,
   args,
   body,
   env: defineTimeEnv,
@@ -23,6 +27,8 @@ const makeClosure = (args, body, defineTimeEnv) => ({
  * is definitely fresher than `defineTimeEnv`. We just have too many names though.
  */
 const applyClosure = (evaluator, closure, vals, callTimeEnv, isLexical = true) => {
+  invariant(closure.type === CLOSURE_TYPE_FLAG, `${closure} is not a closure`);
+
   const { args, body, env: defineTimeEnv } = closure;
 
   if (!isLexical) {

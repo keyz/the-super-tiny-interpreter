@@ -1,6 +1,6 @@
 import invariant from 'fbjs/lib/invariant';
 
-import { batchExtendEnv } from './Environment';
+import { batchExtendEnv, extendEnv } from './Environment';
 const CLOSURE_TYPE_FLAG = Symbol('CLOSURE_TYPE_FLAG');
 
 /*
@@ -8,12 +8,32 @@ const CLOSURE_TYPE_FLAG = Symbol('CLOSURE_TYPE_FLAG');
  * a closure is just a combination of a function definition and an environment snapshot.
  * Here we represent a closure simply as a plain object.
  */
-const makeClosure = (args, body, defineTimeEnv) => ({
+const makeClosure = (params, body, defineTimeEnv) => ({
   type: CLOSURE_TYPE_FLAG,
-  args,
+  params,
   body,
   env: defineTimeEnv,
 });
+
+/*
+ * This is a little bit tricky and please feel free to ignore this part.
+ *
+ * Our arrow functions can be recursively defined. For instance,
+ * in `const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));`:
+ * we need to reference `fact` in the body of `fact` itself.
+ *
+ * If we create a "normal" closure for the function above, the `fact` in the body
+ * will be unbound.
+ *
+ * A quick fix is to update the environment with a reference to the closure itself.
+ * For more information, check http://www.cs.indiana.edu/~dyb/papers/fixing-letrec.pdf
+ */
+const makeRecClosure = (id, params, body, defineTimeEnv) => {
+  const closure = makeClosure(params, body, defineTimeEnv);
+  const updatedEnvWithSelfRef = extendEnv(id, closure, defineTimeEnv);
+  closure.env = updatedEnvWithSelfRef;
+  return closure;
+};
 
 /*
  * `applyClosure` is where the function invocation (computation) happens.
@@ -29,22 +49,23 @@ const makeClosure = (args, body, defineTimeEnv) => ({
 const applyClosure = (evaluator, closure, vals, callTimeEnv, isLexical = true) => {
   invariant(closure.type === CLOSURE_TYPE_FLAG, `${closure} is not a closure`);
 
-  const { args, body, env: defineTimeEnv } = closure;
+  const { params, body, env: defineTimeEnv } = closure;
 
   if (!isLexical) {
     // Dynamic scope.
     // `callTimeEnv` is the latest binding information.
-    const envForTheEvaluator = batchExtendEnv(args, vals, callTimeEnv);
+    const envForTheEvaluator = batchExtendEnv(params, vals, callTimeEnv);
     return evaluator(body, envForTheEvaluator);
   }
 
   // Lexical closure yo.
   // `defineTimeEnv` is the one that got extracted from the closure.
-  const envForTheEvaluator = batchExtendEnv(args, vals, defineTimeEnv);
+  const envForTheEvaluator = batchExtendEnv(params, vals, defineTimeEnv);
   return evaluator(body, envForTheEvaluator);
 };
 
 export {
   makeClosure,
+  makeRecClosure,
   applyClosure,
 };

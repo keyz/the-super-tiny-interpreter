@@ -7,6 +7,7 @@ import {
 
 import {
   makeClosure,
+  makeRecClosure,
   applyClosure,
 } from '../Closure';
 
@@ -33,15 +34,15 @@ const interp = (exp, env) => {
     }
 
     case 'ArrowFunctionExpression': {
-      /*
-       * @TODO double check the logic,
-       * but for now we don't need to dispatch based on `expression` here
-       */
       const { body, params } = exp;
-
       const names = params.map((obj) => obj.name);
-      const val = makeClosure(names, body, env);
-      return val;
+
+      if (exp.extra && exp.extra.isLambda) {
+        const { name: selfId } = exp.extra;
+        return makeRecClosure(selfId, names, body, env);
+      }
+
+      return makeClosure(names, body, env);
     }
 
     case 'CallExpression': {
@@ -50,8 +51,7 @@ const interp = (exp, env) => {
       const closure = interp(callee, env);
       const vals = rawArgs.map((obj) => interp(obj, env));
 
-      const val = applyClosure(interp, closure, vals, env);
-      return val;
+      return applyClosure(interp, closure, vals, env);
     }
 
     case 'UnaryExpression': {

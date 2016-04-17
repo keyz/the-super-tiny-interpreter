@@ -1,14 +1,12 @@
-jest.unmock('../ExpressionInterp').unmock('../StatementInterp')
-    .unmock('../../Parser')
+jest.unmock('../../Parser')
+    .unmock('../ExpressionInterp').unmock('../StatementInterp')
     .unmock('../../Environment').unmock('../../Closure');
 
 const { interp } = require('../ExpressionInterp');
 const { parse } = require('../../Parser');
 const {
   emptyEnv,
-  // lookupEnv,
   extendEnv,
-  // batchExtendEnv,
 } = require('../../Environment');
 
 import { makeClosure } from '../../Closure';
@@ -163,16 +161,15 @@ describe('Interp', () => {
     })());
   });
 
-//   it('should support basic recursion', () => {
-//     expect(interpExp(`(() => {
-//       const fact = (x) => (x === 1 ? 1 : x * fact(x - 1));
-// //      return fact(5);
-//     })()`)).toBe((() => {
-//       const fact = (x) => (x === 1 ? 1 : x * fact(x - 1));
-// //      return fact(5);
-//     })());
-//   });
-
+  it('should support recursions (letrec)', () => {
+    expect(interpExp(`(() => {
+      const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
+      return fact(5);
+    })()`)).toBe((() => {
+      const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
+      return fact(5);
+    })());
+  });
 
   // it('IfStatement', () => {
   //   expect(interpExp(`(() => {

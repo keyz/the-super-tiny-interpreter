@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,12 @@
   "dependencies": {
     "babylon": "^6.7.0",
     "immutable": "^3.7.6"
+  },
+  "jest": {
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/babylon",
+      "<rootDir>/node_modules/immutable",
+      "<rootDir>/src/utils"
+    ]
   }
 }

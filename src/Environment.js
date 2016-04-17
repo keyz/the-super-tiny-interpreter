@@ -12,14 +12,19 @@ import { Map as iMap } from 'immutable';
 /*
  * An empty map to start with.
  */
-const emptyEnv = iMap();
+const emptyEnv = iMap({
+  undefined: void 0,
+});
 
 /*
  * get(name)
+ * throws if the name cannot be found
  */
 const lookupEnv = (name, env) => {
   if (!env.has(name)) {
-    throw new Error(`unbound variable ${name}. environment snapshot: ${env.toString()}`);
+    throw new Error(
+      `* Uncaught ReferenceError: ${name} is not defined. env snapshot: ${env.toString()}`,
+    );
   }
 
   return env.get(name);

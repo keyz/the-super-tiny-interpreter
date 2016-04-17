@@ -3,15 +3,13 @@
   "env": {
     "node": true,
     "es6": true,
-    "mocha": true,
+    "jest": true,
   },
   "ecmaFeatures": {
     "generators": true,
   },
   "globals": {
     "__DEV__": true,
-    "expect": true,
-    "jest": true,
   },
   "parser": "babel-eslint",
   "rules": {

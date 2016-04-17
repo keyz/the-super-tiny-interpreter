@@ -18,6 +18,7 @@ const astStripList = [
   'extra',
   'directives',
   'generator',
+  'async',
 ];
 
 /*

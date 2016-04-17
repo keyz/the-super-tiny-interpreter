@@ -1,4 +1,6 @@
-jest.disableAutomock();
+'use strict';
+
+jest.unmock('../Environment');
 
 const {
   emptyEnv,
@@ -8,13 +10,28 @@ const {
 } = require('../Environment');
 
 describe('Environment', () => {
-  it('has an empty env that contains nothing', () => {
-    expect(emptyEnv.size).toBe(0);
+  it('has an empty env that contains `undefined`', () => {
+    expect(lookupEnv('undefined', emptyEnv)).toBe(void 0);
+    expect(emptyEnv.size).toBe(1);
   });
 
   it('should extend and lookup stuff correctly', () => {
     const env = extendEnv('foo', 999, emptyEnv);
     expect(lookupEnv('foo', env)).toBe(999);
+  });
+
+  it('should support shadowing correctly', () => {
+    const data = [
+      [ 'foo', 0 ],
+      [ 'foo', 13 ],
+    ];
+
+    const env = data.reduce(
+      (res, [ name, val ]) => extendEnv(name, val, res),
+      emptyEnv,
+    );
+
+    expect(lookupEnv('foo', env)).toBe(13);
   });
 
   it('should batch extend stuff correctly', () => {
@@ -23,12 +40,12 @@ describe('Environment', () => {
     const vals = [ 1, 2, 3, 4 ];
     const extendedEnv = batchExtendEnv(keys, vals, env);
 
-    expect(extendedEnv.size).toBe(4);
+    expect(extendedEnv.size - emptyEnv.size).toBe(4);
     expect(lookupEnv('james', extendedEnv)).toBe(3);
     expect(lookupEnv('foo', extendedEnv)).toBe(1);
   });
 
-  it('should throw when the argument count is not correct', () => {
+  it('should throw when arguments.length !== parameters.length', () => {
     const env = extendEnv('foo', 999, emptyEnv);
     const keys = [ 'foo', 'bar', 'james', 'huang', 'yeah' ];
     const vals = [ 1, 2, 3 ];

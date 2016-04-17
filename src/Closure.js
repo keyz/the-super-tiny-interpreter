@@ -54,13 +54,13 @@ const applyClosure = (evaluator, closure, vals, callTimeEnv, isLexical = true) =
   if (!isLexical) {
     // Dynamic scope.
     // `callTimeEnv` is the latest binding information.
-    const envForTheEvaluator = batchExtendEnv(params, vals, /* HEY LOOK AT ME → */ callTimeEnv);
+    const envForTheEvaluator = batchExtendEnv(params, vals, /* 🙋 HEY LOOK AT ME 🙋 */ callTimeEnv);
     return evaluator(body, envForTheEvaluator);
   }
 
   // Lexical closure yo.
   // `defineTimeEnv` is the one that got extracted from the closure.
-  const envForTheEvaluator = batchExtendEnv(params, vals, /* HEY LOOK AT ME → */ defineTimeEnv);
+  const envForTheEvaluator = batchExtendEnv(params, vals, /* 🙋 HEY LOOK AT ME 🙋 */ defineTimeEnv);
   return evaluator(body, envForTheEvaluator);
 };
 

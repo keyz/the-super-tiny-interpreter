@@ -1,3 +1,5 @@
+'use strict';
+
 jest.unmock('../../Parser')
     .unmock('../ExpressionInterp').unmock('../StatementInterp')
     .unmock('../../Environment').unmock('../../Closure');
@@ -37,16 +39,20 @@ describe('Interp', () => {
   });
 
   it('UnaryExpression', () => {
-    expect(interpExp('!true')).toBe(false);
-    expect(interpExp('!false')).toBe(true);
-    expect(interpExp('!!0')).toBe(false);
-    expect(interpExp('!!3')).toBe(true);
+    expect(interpExp('!true')).toBe(!true);
+    expect(interpExp('!false')).toBe(!false);
+    expect(interpExp('!!0')).toBe(!!0);
+    expect(interpExp('!!3')).toBe(!!3);
+    expect(interpExp('-12')).toBe(-12);
   });
 
   it('BinaryExpression', () => {
     expect(interpExp('1 + 1')).toBe(1 + 1);
     expect(interpExp('15 - 4')).toBe(15 - 4);
+    expect(interpExp('15 * 4')).toBe(15 * 4);
+    expect(interpExp('15 / 4')).toBe(15 / 4);
     expect(interpExp('15 + 4 + 12')).toBe(15 + 4 + 12);
+    expect(interpExp('15 + 4 * 12 - 28 / 15')).toBe(15 + 4 * 12 - 28 / 15);
 
     expect(interpExp('3 < 12')).toBe(3 < 12);
     expect(interpExp('3 > 12')).toBe(3 > 12);
@@ -117,7 +123,7 @@ describe('Interp', () => {
       .toBe(((x) => { 123; return x + 12; })(12)); // eslint-disable-line no-unused-expressions
   });
 
-  it('should shadow variable bindings', () => {
+  it('should shadow variable bindings currently', () => {
     const env0 = extendEnv('x', 24, emptyEnv);
     expect(interpExpWithEnv('((x) => { return x + 12; })(12)', env0))
       .toBe(((x) => { return x + 12; })(12)); // eslint-disable-line arrow-body-style
@@ -143,9 +149,7 @@ describe('Interp', () => {
       const add3 = adder(3);
       return add3(39);
     })());
-  });
 
-  it('should make correct closures', () => {
     expect(interpExp(`(() => {
       const x = 100;
       const y = 200;
@@ -159,9 +163,23 @@ describe('Interp', () => {
       const add3 = adder(3);
       return add3(39);
     })());
+
+    expect(interpExp(`(() => {
+      const times2 = (x) => x * 2;
+      const times4 = (x) => times2(times2(x));
+      const times4Add1 = (x) => times4(x) + 1;
+
+      return times4Add1(39);
+    })()`)).toBe((() => {
+      const times2 = (x) => x * 2;
+      const times4 = (x) => times2(times2(x));
+      const times4Add1 = (x) => times4(x) + 1;
+
+      return times4Add1(39);
+    })());
   });
 
-  it('should support recursions (letrec)', () => {
+  it('should support recursion (letrec)', () => {
     expect(interpExp(`(() => {
       const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
       return fact(5);

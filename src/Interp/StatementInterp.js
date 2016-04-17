@@ -1,6 +1,7 @@
 /*
  * https://github.com/estree/estree/blob/master/spec.md#statements
  */
+
 import invariant from 'fbjs/lib/invariant';
 
 import { interp as expInterp } from './ExpressionInterp';
@@ -16,7 +17,7 @@ const interp = (exp, env) => {
 
         switch (currentExp.type) {
           case 'ExpressionStatement': {
-            expInterp(currentExp.expression, currentEnv);
+            expInterp(currentExp.expression, currentEnv); // stuff like `log(something)`
             continue;
           }
 

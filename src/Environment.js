@@ -13,7 +13,7 @@ import { Map as iMap } from 'immutable';
  * An empty map to start with.
  */
 const emptyEnv = iMap({
-  undefined: void 0,
+  undefined: void 0, // `void 0` is always `undefined`
 });
 
 /*

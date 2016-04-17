@@ -6,11 +6,12 @@
   "scripts": {
     "clean": "rimraf lib coverage",
     "build:babel": "babel src --out-dir lib --ignore __tests__",
+    "build": "npm run clean && npm run lint && npm test && npm run build:babel",
     "test": "jest",
     "coverage": "jest --coverage",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint src",
-    "postinstall": "npm run clean && npm run lint && npm test && npm run build:babel"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",

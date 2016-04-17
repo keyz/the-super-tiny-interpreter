@@ -1,4 +1,4 @@
-const isObject = (x) => x && typeof x === 'object' && !Array.isArray(x);
+const isObject = (x) => !!(x && typeof x === 'object' && !Array.isArray(x));
 
 /*
  * fn acts as both a mapFn and a predicate

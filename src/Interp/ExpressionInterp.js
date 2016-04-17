@@ -1,6 +1,7 @@
 /*
  * https://github.com/estree/estree/blob/master/spec.md#expressions
  */
+
 import {
   lookupEnv,
 } from '../Environment';
@@ -61,6 +62,9 @@ const interp = (exp, env) => {
       switch (operator) {
         case '!': {
           return !interp(argument, env);
+        }
+        case '-': {
+          return -interp(argument, env);
         }
         default: {
           throw new Error(`unsupported UnaryExpression operator ${operator}`);

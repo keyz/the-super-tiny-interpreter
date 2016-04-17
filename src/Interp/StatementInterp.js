@@ -44,7 +44,7 @@ const interp = (exp, env) => {
 
             if (init.type === 'ArrowFunctionExpression') {
               /*
-               * TL;DR: it could be a letrec!
+               * TL;DR: it could be a `letrec`!
                *
                * A better way is to do a static analysis and to see whether the RHS
                * actually contains recursive definitions.
@@ -68,7 +68,7 @@ const interp = (exp, env) => {
           // case 'IfStatement': {
           //   const { alternate, consequent, test } = currentExp;
           //   const testVal = expInterp(test, currentEnv);
-          //   return currentExp;
+          //
           //   if (testVal) {
           //
           //   }

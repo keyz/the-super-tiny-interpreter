@@ -9,7 +9,7 @@ const mapFilterObject = (obj, fn) => {
 
   keys.forEach((key) => {
     const val = obj[key];
-    const fnResult = fn(val, key); // `fn` return `false` for removal, or a tuple of `[ key, val ]`
+    const fnResult = fn(val, key); // `fn` returns `false` for removal, or a tuple of `[ key, val ]`
     if (fnResult) {
       const [ newKey, newVal ] = fnResult;
       result[newKey] = newVal;

@@ -1,32 +1,39 @@
 {
-  "name": "trivial-js-interpreter",
+  "name": "the-super-tiny-interpreter",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Explain what a closure is by writing a JavaScript interpreter in JavaScript",
+  "main": "lib/index.js",
   "scripts": {
+    "clean": "rimraf lib coverage",
+    "build:babel": "babel src --out-dir lib --ignore __tests__",
     "test": "jest",
-    "lint": "eslint src"
+    "coverage": "jest --coverage",
+    "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
+    "lint": "eslint src",
+    "postinstall": "npm run clean && npm run lint && npm test && npm run coveralls && npm run build:babel"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keyanzhang/trivial-js-interpreter.git"
+    "url": "git+https://github.com/keyanzhang/the-super-tiny-interpreter.git"
   },
   "keywords": [],
   "author": "Keyan Zhang <root@keyanzhang.com> (http://keya.nz)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/keyanzhang/trivial-js-interpreter/issues"
+    "url": "https://github.com/keyanzhang/the-super-tiny-interpreter/issues"
   },
-  "homepage": "https://github.com/keyanzhang/trivial-js-interpreter#readme",
+  "homepage": "https://github.com/keyanzhang/the-super-tiny-interpreter#readme",
   "devDependencies": {
+    "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
-    "babel-jest": "^11.0.0",
+    "babel-jest": "^11.0.1",
     "babel-plugin-transform-flow-strip-types": "^6.7.0",
     "babel-polyfill": "^6.7.4",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-stage-0": "^6.5.0",
-    "eslint": "^2.7.0",
+    "coveralls": "^2.11.9",
+    "eslint": "^2.8.0",
     "eslint-config-airbnb": "^7.0.0",
     "eslint-plugin-babel": "^3.2.0",
     "jest": "^0.1.40",
@@ -35,7 +42,7 @@
   "dependencies": {
     "babylon": "^6.7.0",
     "fbjs": "^0.8.0",
-    "immutable": "^3.7.6"
+    "immutable": "^3.8.0"
   },
   "jest": {
     "unmockedModulePathPatterns": [
@@ -43,6 +50,9 @@
       "<rootDir>/node_modules/immutable",
       "<rootDir>/node_modules/fbjs",
       "<rootDir>/src/utils"
+    ],
+    "testPathDirs": [
+      "<rootDir>/src"
     ]
   }
 }

@@ -19,11 +19,11 @@ const makeClosure = (params, body, defineTimeEnv) => ({
  * This is a little bit tricky and please feel free to ignore this part.
  *
  * Our arrow functions can be recursively defined. For instance,
- * in `const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));`:
+ * in `const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));`
  * we need to reference `fact` in the body of `fact` itself.
  *
- * If we create a "normal" closure for the function above, the `fact` in the body
- * will be unbound.
+ * If we create a "normal" closure for the function above, the `fact` (pun intended)
+ * in the body will be unbound.
  *
  * A quick fix is to update the environment with a reference to the closure itself.
  * For more information, check http://www.cs.indiana.edu/~dyb/papers/fixing-letrec.pdf
@@ -54,13 +54,13 @@ const applyClosure = (evaluator, closure, vals, callTimeEnv, isLexical = true) =
   if (!isLexical) {
     // Dynamic scope.
     // `callTimeEnv` is the latest binding information.
-    const envForTheEvaluator = batchExtendEnv(params, vals, callTimeEnv);
+    const envForTheEvaluator = batchExtendEnv(params, vals, /* HEY LOOK AT ME → */ callTimeEnv);
     return evaluator(body, envForTheEvaluator);
   }
 
   // Lexical closure yo.
   // `defineTimeEnv` is the one that got extracted from the closure.
-  const envForTheEvaluator = batchExtendEnv(params, vals, defineTimeEnv);
+  const envForTheEvaluator = batchExtendEnv(params, vals, /* HEY LOOK AT ME → */ defineTimeEnv);
   return evaluator(body, envForTheEvaluator);
 };
 

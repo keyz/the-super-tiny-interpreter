@@ -2,7 +2,7 @@
  * Writing a parser is way beyond the scope of this interpreter.
  * Let's just borrow it from babel.
  */
-import { parse as bParse } from 'babylon';
+import { parse as babylonParse } from 'babylon';
 import { isObject, mapFilterObject } from './utils';
 
 const defaultOptions = {
@@ -44,7 +44,7 @@ const cleanupAst = (target) => {
 };
 
 const parse = (code, options = defaultOptions) => {
-  const originalAst = bParse(code, options);
+  const originalAst = babylonParse(code, options);
   return cleanupAst(originalAst).program; // we don't care about `File` type, too
 };
 

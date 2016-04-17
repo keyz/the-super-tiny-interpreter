@@ -10,7 +10,7 @@
     "coverage": "jest --coverage",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint src",
-    "postinstall": "npm run clean && npm run lint && npm test && npm run coveralls && npm run build:babel"
+    "postinstall": "npm run clean && npm run lint && npm test && npm run build:babel"
   },
   "repository": {
     "type": "git",

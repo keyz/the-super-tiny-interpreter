@@ -2,9 +2,7 @@
  * https://github.com/estree/estree/blob/master/spec.md#expressions
  */
 import {
-  // emptyEnv,
   lookupEnv,
-  // extendEnv,
 } from '../Environment';
 
 import {

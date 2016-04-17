@@ -34,12 +34,14 @@
   },
   "dependencies": {
     "babylon": "^6.7.0",
+    "fbjs": "^0.8.0",
     "immutable": "^3.7.6"
   },
   "jest": {
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/babylon",
       "<rootDir>/node_modules/immutable",
+      "<rootDir>/node_modules/fbjs",
       "<rootDir>/src/utils"
     ]
   }

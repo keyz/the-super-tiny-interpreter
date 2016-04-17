@@ -1,3 +1,5 @@
+import invariant from 'fbjs/lib/invariant';
+
 import { interp as expInterp } from './ExpressionInterp';
 import { extendEnv } from '../Environment';
 
@@ -13,12 +15,14 @@ const interp = (exp, env) => {
 
             return expInterp(argument, currentEnv); // return!
           }
+
           case 'VariableDeclaration': {
             const { kind, declarations } = currentExp;
 
-            if (kind !== 'const') {
-              throw new Error(`unsupported VariableDeclaration kind ${kind}`);
-            }
+            invariant(
+              kind === 'const',
+              `unsupported VariableDeclaration kind ${kind}`,
+            );
 
             for (let j = 0; j < declarations.length; j++) {
               const { id, init } = declarations[j];
@@ -28,10 +32,12 @@ const interp = (exp, env) => {
             }
             continue;
           }
+
           case 'ExpressionStatement': {
             expInterp(currentExp.expression, currentEnv);
             continue;
           }
+
           default: {
             throw new Error(`unsupported BlockStatement type ${currentExp.type}`);
           }

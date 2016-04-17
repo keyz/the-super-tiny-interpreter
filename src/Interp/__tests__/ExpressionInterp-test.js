@@ -21,6 +21,11 @@ describe('Interp', () => {
     expect(interpExp('null')).toBe(null);
   });
 
+  it('undefined', () => {
+    expect(interpExp('undefined')).toBe(void 0);
+  });
+
+
   it('NumericLiteral', () => {
     expect(interpExp('3.123')).toBe(3.123);
     expect(interpExp('424')).toBe(424);
@@ -126,5 +131,33 @@ describe('Interp', () => {
         const y = 24;
         return y + 12;
       })()); // eslint-disable-line arrow-body-style
+  });
+
+  it('should make correct closures', () => {
+    expect(interpExp(`(() => {
+      const adder = (x) => (y) => x + y;
+      const add3 = adder(3);
+      return add3(39);
+    })()`)).toBe((() => {
+      const adder = (x) => (y) => x + y;
+      const add3 = adder(3);
+      return add3(39);
+    })());
+  });
+
+  it('should make correct closures', () => {
+    expect(interpExp(`(() => {
+      const x = 100;
+      const y = 200;
+      const adder = (x) => (y) => x + y;
+      const add3 = adder(3);
+      return add3(39);
+    })()`)).toBe((() => {
+      const x = 100; // eslint-disable-line no-unused-vars
+      const y = 200; // eslint-disable-line no-unused-vars
+      const adder = (x) => (y) => x + y; // eslint-disable-line no-shadow
+      const add3 = adder(3);
+      return add3(39);
+    })());
   });
 });

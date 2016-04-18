@@ -189,6 +189,23 @@ describe('Interp', () => {
     })());
   });
 
+  it('should support early return statements', () => {
+    expect(interpExp(`(() => {
+      const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
+      return fact(5);
+      const foo = 12;
+      const bar = 140;
+      return foo + bar;
+    })()`)).toBe((() => {
+      const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
+      return fact(5);
+      const foo = 12; // eslint-disable-line no-unreachable
+      const bar = 140; // eslint-disable-line no-unreachable
+      return foo + bar; // eslint-disable-line no-unreachable
+    })());
+  });
+
+
   // it('IfStatement', () => {
   //   expect(interpExp(`(() => {
   //     const foo = 12;

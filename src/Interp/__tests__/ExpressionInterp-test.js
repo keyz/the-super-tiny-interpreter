@@ -1,14 +1,16 @@
 'use strict';
 
-jest.unmock('../../Parser')
+jest.unmock('../index')
+    .unmock('../../Parser')
     .unmock('../ExpressionInterp')
     .unmock('../StatementInterp')
     .unmock('../../Environment')
     .unmock('../../Closure')
     .unmock('../../Options');
 
-const { interp } = require('../ExpressionInterp');
+const { interp } = require('../index');
 const { parse } = require('../../Parser');
+
 const {
   emptyEnv,
   extendEnv,
@@ -236,27 +238,4 @@ describe('Interp', () => {
 
     Options.isLexical = true;
   });
-
-
-  // it('IfStatement', () => {
-  //   expect(interpExp(`(() => {
-  //     const foo = 12;
-  //     if (foo > 24) {
-  //       return -20;
-  //     } else if (foo < 25) {
-  //       return -12;
-  //     } else { // eslint-disable-line no-else-return
-  //       return 1000;
-  //     }
-  //   })()`)).toBe((() => {
-  //     const foo = 12;
-  //     if (foo > 24) {
-  //       return -20;
-  //     } else if (foo < 25) {
-  //       return -12;
-  //     } else { // eslint-disable-line no-else-return
-  //       return 1000;
-  //     }
-  //   })());
-  // });
 });

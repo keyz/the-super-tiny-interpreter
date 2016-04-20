@@ -65,16 +65,6 @@ const interp = (exp, env) => {
             continue;
           }
 
-          // @TODO if statements
-          // case 'IfStatement': {
-          //   const { alternate, consequent, test } = currentExp;
-          //   const testVal = expInterp(test, currentEnv);
-          //
-          //   if (testVal) {
-          //
-          //   }
-          // }
-
           default: {
             throw new Error(`unsupported BlockStatement type ${currentExp.type}`);
           }

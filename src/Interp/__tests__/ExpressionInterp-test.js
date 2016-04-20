@@ -1,8 +1,11 @@
 'use strict';
 
 jest.unmock('../../Parser')
-    .unmock('../ExpressionInterp').unmock('../StatementInterp')
-    .unmock('../../Environment').unmock('../../Closure');
+    .unmock('../ExpressionInterp')
+    .unmock('../StatementInterp')
+    .unmock('../../Environment')
+    .unmock('../../Closure')
+    .unmock('../../Options');
 
 const { interp } = require('../ExpressionInterp');
 const { parse } = require('../../Parser');
@@ -11,7 +14,8 @@ const {
   extendEnv,
 } = require('../../Environment');
 
-import { makeClosure } from '../../Closure';
+const { makeClosure } = require('../../Closure');
+const Options = require('../../Options').default;
 
 const parseAndgetExp = (code) => parse(code).body[0].expression;
 
@@ -203,6 +207,34 @@ describe('Interp', () => {
       const bar = 140; // eslint-disable-line no-unreachable
       return foo + bar; // eslint-disable-line no-unreachable
     })());
+  });
+
+  it('should support dynamic scope', () => {
+    Options.isLexical = false;
+
+    expect(interpExp(`(() => {
+      const adder = (x) => (y) => x + y;
+      const x = 100;
+      const add3ButActuallyAdd100 = adder(3);
+      return add3ButActuallyAdd100(5);
+    })()`)).toBe(100 + 5);
+
+    expect(interpExp(`(() => {
+      const adder = (x) => (y) => x + y;
+      const x = 100;
+      const add3ButActuallyAdd100 = adder(3);
+      return add3ButActuallyAdd100(5);
+    })()`)).toBe(100 + 5);
+
+    expect(interpExp(`(() => {
+      const x = 100;
+      const y = 200;
+      const adder = (x) => (y) => x + y;
+      const add3 = adder(3);
+      return add3(39);
+    })()`)).toBe(100 + 39);
+
+    Options.isLexical = true;
   });
 
 

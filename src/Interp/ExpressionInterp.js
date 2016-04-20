@@ -12,6 +12,8 @@ import {
   applyClosure,
 } from '../Closure';
 
+import Options from '../Options';
+
 import { interp as statementInterp } from './StatementInterp';
 
 const interp = (exp, env) => {
@@ -52,7 +54,7 @@ const interp = (exp, env) => {
       const closure = interp(callee, env);
       const vals = rawArgs.map((obj) => interp(obj, env));
 
-      return applyClosure(interp, closure, vals, env);
+      return applyClosure(interp, closure, vals, env, Options.isLexical);
     }
 
     case 'UnaryExpression': {

@@ -1,4 +1,13 @@
-'use strict';
+import { interp } from '../index';
+import { parse } from '../../Parser';
+
+import {
+  emptyEnv,
+  extendEnv,
+} from '../../Environment';
+
+import { makeClosure } from '../../Closure';
+import Options from '../../Options';
 
 jest.unmock('../index')
     .unmock('../../Parser')
@@ -7,17 +16,6 @@ jest.unmock('../index')
     .unmock('../../Environment')
     .unmock('../../Closure')
     .unmock('../../Options');
-
-const { interp } = require('../index');
-const { parse } = require('../../Parser');
-
-const {
-  emptyEnv,
-  extendEnv,
-} = require('../../Environment');
-
-const { makeClosure } = require('../../Closure');
-const Options = require('../../Options').default;
 
 const parseAndgetExp = (code) => parse(code).body[0].expression;
 

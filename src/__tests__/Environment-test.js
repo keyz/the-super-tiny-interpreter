@@ -1,13 +1,11 @@
-'use strict';
-
-jest.unmock('../Environment');
-
-const {
+import {
   emptyEnv,
   lookupEnv,
   extendEnv,
   batchExtendEnv,
-} = require('../Environment');
+} from '../Environment';
+
+jest.unmock('../Environment');
 
 describe('Environment', () => {
   it('has an empty env that contains `undefined`', () => {

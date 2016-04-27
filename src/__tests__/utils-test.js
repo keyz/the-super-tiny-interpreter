@@ -1,6 +1,4 @@
-'use strict';
-
-const { isObject, mapFilterObject } = require('../utils');
+import { isObject, mapFilterObject } from '../utils';
 
 describe('isObject', () => {
   it('should work on trivial stuff', () => {

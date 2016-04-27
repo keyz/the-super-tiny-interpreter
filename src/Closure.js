@@ -1,7 +1,7 @@
 import invariant from 'fbjs/lib/invariant';
 
 import { batchExtendEnv, extendEnv } from './Environment';
-const CLOSURE_TYPE_FLAG = Symbol('CLOSURE_TYPE_FLAG');
+import { CLOSURE_TYPE_FLAG } from './typeFlags';
 
 /*
  * As we've said,

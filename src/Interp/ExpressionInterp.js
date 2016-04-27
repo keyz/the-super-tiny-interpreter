@@ -12,6 +12,10 @@ import {
   applyClosure,
 } from '../Closure';
 
+import { CLOSURE_TYPE_FLAG, NATIVE_FUNC_FLAG } from '../typeFlags';
+
+import Prims from '../Prims';
+
 import Options from '../Options';
 
 import { interp as statementInterp } from './StatementInterp';
@@ -33,6 +37,12 @@ const interp = (exp, env) => {
 
     case 'Identifier': {
       const { name } = exp;
+
+      // @TODO document this
+      if (Object.keys(Prims).includes(name)) {
+        return Prims[name];
+      }
+
       return lookupEnv(name, env);
     }
 
@@ -51,10 +61,21 @@ const interp = (exp, env) => {
     case 'CallExpression': {
       const { callee, arguments: rawArgs } = exp;
       // here we recur on both sides
-      const closure = interp(callee, env);
       const vals = rawArgs.map((obj) => interp(obj, env));
+      const closureOrFunc = interp(callee, env);
 
-      return applyClosure(interp, closure, vals, env, Options.isLexical);
+      // @TODO document this
+      switch (closureOrFunc.type) {
+        case CLOSURE_TYPE_FLAG: {
+          return applyClosure(interp, closureOrFunc, vals, env, Options.isLexical);
+        }
+        case NATIVE_FUNC_FLAG: {
+          return closureOrFunc.func.apply(null, vals);
+        }
+        default: {
+          throw new Error(`unsupported ~closure type ${closureOrFunc.type}`);
+        }
+      }
     }
 
     case 'UnaryExpression': {

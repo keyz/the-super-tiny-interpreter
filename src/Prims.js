@@ -1,19 +1,18 @@
-import { makeClosure } from './Closure';
-import { log } from './Writer';
-import { emptyEnv } from './Environment';
+import { NATIVE_FUNC_FLAG } from './typeFlags';
 
-const LogClosure = makeClosure(
-  [ 'x' ], {
-    type: 'NativeFuncCall',
-    value: log,
-  },
-  emptyEnv,
+const wrapNativeFunc = (params, func) => ({
+  type: NATIVE_FUNC_FLAG,
+  params,
+  func,
+});
+
+const logFunc = wrapNativeFunc(
+  [ 'x' ],
+  (x) => { console.log(x); }, // eslint-disable-line no-console
 );
 
 const Prims = {
-  log: LogClosure,
+  log: logFunc,
 };
 
-export {
-  Prims,
-};
+export default Prims;

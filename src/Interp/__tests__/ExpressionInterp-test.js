@@ -10,11 +10,13 @@ import { makeClosure } from '../../Closure';
 import Options from '../../Options';
 
 jest.unmock('../index')
+    .unmock('../../typeFlags')
     .unmock('../../Parser')
     .unmock('../ExpressionInterp')
     .unmock('../StatementInterp')
     .unmock('../../Environment')
     .unmock('../../Closure')
+    .unmock('../../Prims')
     .unmock('../../Options');
 
 const parseAndgetExp = (code) => parse(code).body[0].expression;
@@ -209,6 +211,18 @@ describe('Interp', () => {
     })());
   });
 
+  it('should return undefined when there\'s no return', () => {
+    expect(interpExp(`(() => {
+      const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
+      const bar = 140;
+      bar;
+    })()`)).toBe((() => {
+      const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
+      const bar = 140;
+      bar; // eslint-disable-line no-unused-expressions
+    })());
+  });
+
   it('should support dynamic scope', () => {
     Options.isLexical = false;
 
@@ -235,5 +249,28 @@ describe('Interp', () => {
     })()`)).toBe(100 + 39);
 
     Options.isLexical = true;
+  });
+
+  it('should support `log` as a native func call', () => {
+    spyOn(console, 'log');
+
+    expect(interpExp(`(() => {
+      const fact = (x) => (x < 2 ? 1 : x * fact(x - 1));
+      log(fact(5));
+      log(256);
+      const foo = 12;
+      const bar = 140;
+      log(bar);
+      return foo + bar;
+    })()`)).toBe((() => {
+      const foo = 12;
+      const bar = 140;
+      return foo + bar;
+    })());
+
+    expect(console.log.calls.count()).toEqual(3); // eslint-disable-line no-console
+    expect(console.log.calls.argsFor(0)).toEqual([ 120 ]); // eslint-disable-line no-console
+    expect(console.log.calls.argsFor(1)).toEqual([ 256 ]); // eslint-disable-line no-console
+    expect(console.log.calls.argsFor(2)).toEqual([ 140 ]); // eslint-disable-line no-console
   });
 });

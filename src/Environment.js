@@ -23,7 +23,7 @@ const emptyEnv = iMap({
 const lookupEnv = (name, env) => {
   if (!env.has(name)) {
     throw new Error(
-      `* Uncaught ReferenceError: ${name} is not defined. env snapshot: ${env.toString()}`,
+      `Uncaught ReferenceError: ${name} is not defined. env snapshot: ${env.toString()}`,
     );
   }
 

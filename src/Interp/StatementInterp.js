@@ -9,6 +9,7 @@ import { extendEnv } from '../Environment';
 
 const statementInterp = (exp, env) => {
   switch (exp.type) {
+    case 'Program': // yeah, this is hacky but it works
     case 'BlockStatement': {
       let currentEnv = env;
 

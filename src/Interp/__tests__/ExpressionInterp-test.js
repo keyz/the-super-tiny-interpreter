@@ -24,7 +24,7 @@ const parseAndGet1stExp = (code) => parse(code).body[0].expression;
 const evalCode = (code) => expInterp(parseAndGet1stExp(code), emptyEnv);
 const evalCodeWithEnv = (code, env) => expInterp(parseAndGet1stExp(code), env);
 
-describe('Interp', () => {
+describe('ExpressionInterp', () => {
   it('NullLiteral', () => {
     expect(evalCode('null')).toBe(null);
   });
@@ -225,13 +225,6 @@ describe('Interp', () => {
 
   it('should support dynamic scope', () => {
     Options.isLexical = false;
-
-    expect(evalCode(`(() => {
-      const adder = (x) => (y) => x + y;
-      const x = 100;
-      const add3ButActuallyAdd100 = adder(3);
-      return add3ButActuallyAdd100(5);
-    })()`)).toBe(100 + 5);
 
     expect(evalCode(`(() => {
       const adder = (x) => (y) => x + y;

@@ -4,6 +4,8 @@
 
 Let's explain what a **[closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)** is by writing a JavaScript interpreter in JavaScript.
 
+This project is still a **work in progress**, but feel free to poke around and check out the unit tests.
+
 ## Disclaimer
 The goal of this project is **not** to make a spec-compliant or blazing-fast interpreter. The goal, however, is to interpret a tiny subset of JavaScript features in **super-easy-to-read™** code.
 
@@ -14,7 +16,7 @@ The goal of this project is **not** to make a spec-compliant or blazing-fast int
   12 // Numeric Literal
   true // Boolean Literal
   null // Null Literal
-  undefined // Do you know that `undefined` is actually an identifier?
+  undefined // Do you know that `undefined` is actually an identifier? Paul Irish calls shadowing it the "Asshole Effect".
   ```
 
 2. Variable, a.k.a. Identifier

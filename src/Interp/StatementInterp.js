@@ -4,10 +4,10 @@
 
 import invariant from 'fbjs/lib/invariant';
 
-import { interp as expInterp } from './ExpressionInterp';
+import { expInterp } from './ExpressionInterp';
 import { extendEnv } from '../Environment';
 
-const interp = (exp, env) => {
+const statementInterp = (exp, env) => {
   switch (exp.type) {
     case 'BlockStatement': {
       let currentEnv = env;
@@ -81,5 +81,5 @@ const interp = (exp, env) => {
 };
 
 export {
-  interp,
+  statementInterp,
 };

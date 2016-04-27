@@ -18,9 +18,9 @@ import Prims from '../Prims';
 
 import Options from '../Options';
 
-import { interp as statementInterp } from './StatementInterp';
+import { statementInterp } from './StatementInterp';
 
-const interp = (exp, env) => {
+const expInterp = (exp, env) => {
   switch (exp.type) {
     case 'NullLiteral': {
       return null;
@@ -61,13 +61,13 @@ const interp = (exp, env) => {
     case 'CallExpression': {
       const { callee, arguments: rawArgs } = exp;
       // here we recur on both sides
-      const vals = rawArgs.map((obj) => interp(obj, env));
-      const closureOrFunc = interp(callee, env);
+      const vals = rawArgs.map((obj) => expInterp(obj, env));
+      const closureOrFunc = expInterp(callee, env);
 
       // @TODO document this
       switch (closureOrFunc.type) {
         case CLOSURE_TYPE_FLAG: {
-          return applyClosure(interp, closureOrFunc, vals, env, Options.isLexical);
+          return applyClosure(expInterp, closureOrFunc, vals, env, Options.isLexical);
         }
         case NATIVE_FUNC_FLAG: {
           return closureOrFunc.func.apply(null, vals);
@@ -84,10 +84,10 @@ const interp = (exp, env) => {
 
       switch (operator) {
         case '!': {
-          return !interp(argument, env);
+          return !expInterp(argument, env);
         }
         case '-': {
-          return -interp(argument, env);
+          return -expInterp(argument, env);
         }
         default: {
           throw new Error(`unsupported UnaryExpression operator ${operator}`);
@@ -99,40 +99,40 @@ const interp = (exp, env) => {
       const { left, operator, right } = exp;
       switch (operator) {
         case '+': {
-          return interp(left, env) + interp(right, env);
+          return expInterp(left, env) + expInterp(right, env);
         }
         case '-': {
-          return interp(left, env) - interp(right, env);
+          return expInterp(left, env) - expInterp(right, env);
         }
         case '*': {
-          return interp(left, env) * interp(right, env);
+          return expInterp(left, env) * expInterp(right, env);
         }
         case '/': {
-          return interp(left, env) / interp(right, env);
+          return expInterp(left, env) / expInterp(right, env);
         }
         case '==': {
-          return interp(left, env) == interp(right, env); // eslint-disable-line eqeqeq
+          return expInterp(left, env) == expInterp(right, env); // eslint-disable-line eqeqeq
         }
         case '===': {
-          return interp(left, env) === interp(right, env);
+          return expInterp(left, env) === expInterp(right, env);
         }
         case '!=': {
-          return interp(left, env) != interp(right, env); // eslint-disable-line eqeqeq
+          return expInterp(left, env) != expInterp(right, env); // eslint-disable-line eqeqeq
         }
         case '!==': {
-          return interp(left, env) !== interp(right, env);
+          return expInterp(left, env) !== expInterp(right, env);
         }
         case '<': {
-          return interp(left, env) < interp(right, env); // eslint-disable-line eqeqeq
+          return expInterp(left, env) < expInterp(right, env); // eslint-disable-line eqeqeq
         }
         case '<=': {
-          return interp(left, env) <= interp(right, env);
+          return expInterp(left, env) <= expInterp(right, env);
         }
         case '>': {
-          return interp(left, env) > interp(right, env); // eslint-disable-line eqeqeq
+          return expInterp(left, env) > expInterp(right, env); // eslint-disable-line eqeqeq
         }
         case '>=': {
-          return interp(left, env) >= interp(right, env);
+          return expInterp(left, env) >= expInterp(right, env);
         }
         default: {
           throw new Error(`unsupported BinaryExpression operator ${operator}`);
@@ -142,7 +142,7 @@ const interp = (exp, env) => {
 
     case 'ConditionalExpression': {
       const { alternate, consequent, test } = exp;
-      return interp(test, env) ? interp(consequent, env) : interp(alternate, env);
+      return expInterp(test, env) ? expInterp(consequent, env) : expInterp(alternate, env);
     }
 
     default: {
@@ -152,5 +152,5 @@ const interp = (exp, env) => {
 };
 
 export {
-  interp,
+  expInterp,
 };

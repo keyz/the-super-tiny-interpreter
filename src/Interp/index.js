@@ -1,1 +1,1 @@
-export { interp } from './ExpressionInterp';
+export { expInterp } from './ExpressionInterp';

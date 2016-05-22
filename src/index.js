@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import { statementInterp } from './Interp';
 import { setLexical } from './Options';
 import { parse } from './Parser';

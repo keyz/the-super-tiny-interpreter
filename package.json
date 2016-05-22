@@ -42,6 +42,7 @@
     "rimraf": "^2.5.2"
   },
   "dependencies": {
+    "babel-polyfill": "^6.9.0",
     "babylon": "^6.7.0",
     "fbjs": "^0.8.0",
     "immutable": "^3.8.0"

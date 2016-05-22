@@ -1,6 +1,6 @@
 {
   "name": "the-super-tiny-interpreter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Explain what a closure is by writing a JavaScript interpreter in JavaScript",
   "main": "lib/index.js",
   "scripts": {

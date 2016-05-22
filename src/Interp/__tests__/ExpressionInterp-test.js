@@ -7,7 +7,7 @@ import {
 } from '../../Environment';
 
 import { makeClosure } from '../../Closure';
-import Options from '../../Options';
+import { setLexical } from '../../Options';
 
 jest.unmock('../index')
     .unmock('../../typeFlags')
@@ -224,7 +224,7 @@ describe('ExpressionInterp', () => {
   });
 
   it('should support dynamic scope', () => {
-    Options.isLexical = false;
+    setLexical(false);
 
     expect(evalCode(`(() => {
       const adder = (x) => (y) => x + y;
@@ -241,7 +241,7 @@ describe('ExpressionInterp', () => {
       return add3(39);
     })()`)).toBe(100 + 39);
 
-    Options.isLexical = true;
+    setLexical(true);
   });
 
   it('should support `log` as a native func call', () => {

@@ -6,4 +6,9 @@ const Options = {
   isLexical: true,
 };
 
+const setLexical = (x) => {
+  Options.isLexical = !!x;
+};
+
+export { setLexical };
 export default Options;

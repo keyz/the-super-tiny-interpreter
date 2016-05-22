@@ -7,7 +7,7 @@ import {
   emptyEnv,
 } from '../../Environment';
 
-import Options from '../../Options';
+import { setLexical } from '../../Options';
 
 jest.unmock('../index')
     .unmock('../../typeFlags')
@@ -43,7 +43,7 @@ describe('StatementInterp', () => {
   it('should support dynamic scope', () => {
     spyOn(console, 'log');
 
-    Options.isLexical = false;
+    setLexical(false);
 
     evalScript(`(() => {
       const adder = (x) => (y) => x + y;
@@ -64,6 +64,6 @@ describe('StatementInterp', () => {
 
     expect(console.log.calls.count()).toEqual(2);
 
-    Options.isLexical = true;
+    setLexical(true);
   });
 });

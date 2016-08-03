@@ -4,6 +4,8 @@
 
 Let's explain what a **[closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)** is by writing a JavaScript interpreter in JavaScript.
 
+Try it here: https://tonicdev.com/npm/the-super-tiny-interpreter
+
 This project is still a **work in progress**, but feel free to poke around and check out the unit tests.
 
 ## Disclaimer
@@ -64,7 +66,7 @@ The goal of this project is **not** to make a spec-compliant or blazing-fast int
 8. Variable Declaration Statement
   - Notice that we only support `const` for now and there's NO mutation (assignment) in our language.
     - That means we can initialize stuff once and only once
-    - And of course `const foo` is not valid JavaScript
+    - And of course `const foo;` is not valid JavaScript
   - If you are familiar with Scheme/OCaml, then `const LHS = RHS` behaves just like a `letrec`.
 
   ```javascript

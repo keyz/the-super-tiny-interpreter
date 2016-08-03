@@ -52,5 +52,6 @@
     "testPathDirs": [
       "<rootDir>/src"
     ]
-  }
+  },
+  "tonicExampleFilename": "examples/tonic/tonicExample.js"
 }

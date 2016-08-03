@@ -5,7 +5,7 @@ describe('isObject', () => {
     expect(isObject(null)).toBe(false);
     expect(isObject(undefined)).toBe(false);
     expect(isObject([])).toBe(false);
-    expect(isObject([ 1, 2, 3 ])).toBe(false);
+    expect(isObject([1, 2, 3])).toBe(false);
 
     expect(isObject({})).toBe(true);
     expect(isObject({ a: 3 })).toBe(true);
@@ -34,14 +34,14 @@ describe('mapFilterObject', () => {
   it('should map and filter correctly', () => {
     expect(mapFilterObject(
       { a: 2, b: 20 },
-      (val, key) => (val > 10 ? [ key, val + 100 ] : false),
+      (val, key) => (val > 10 ? [key, val + 100] : false),
     )).toEqual({
       b: 120,
     });
 
     expect(mapFilterObject(
       { a: 2, b: 20 },
-      (val, key) => (val > 10 ? [ `${key}-postfix`, val + 100 ] : [ key, val ]),
+      (val, key) => (val > 10 ? [`${key}-postfix`, val + 100] : [key, val]),
     )).toEqual({
       a: 2,
       'b-postfix': 120,

@@ -6,24 +6,15 @@
     "jest": true,
     "jasmine": true,
   },
-  "ecmaFeatures": {
-    "generators": true,
-  },
   "globals": {
     "__DEV__": true,
   },
   "parser": "babel-eslint",
   "rules": {
-    "babel/generator-star-spacing": 1,
-    "babel/new-cap": 1,
-    "babel/object-shorthand": 1,
-    "babel/arrow-parens": 1,
-    "babel/no-await-in-loop": 1,
-    "array-bracket-spacing": [1, "always", {
-      "singleValue": true,
-      "objectsInArrays": false,
-      "arraysInArrays": true,
-    }],
+    "no-void": 0,
+    "no-mixed-operators": 0,
+    "no-continue": 0,
+    "import/prefer-default-export": 0,
   },
   "plugins": [
     "babel",

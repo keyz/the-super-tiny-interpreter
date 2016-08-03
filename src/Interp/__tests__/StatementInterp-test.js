@@ -9,16 +9,6 @@ import {
 
 import { setLexical } from '../../Options';
 
-jest.unmock('../index')
-    .unmock('../../typeFlags')
-    .unmock('../../Parser')
-    .unmock('../ExpressionInterp')
-    .unmock('../StatementInterp')
-    .unmock('../../Environment')
-    .unmock('../../Closure')
-    .unmock('../../Prims')
-    .unmock('../../Options');
-
 const evalScript = (code) => statementInterp(parse(code), emptyEnv);
 
 describe('StatementInterp', () => {
@@ -35,9 +25,9 @@ describe('StatementInterp', () => {
     `)).toBe(undefined);
 
     expect(console.log.calls.count()).toEqual(3);
-    expect(console.log.calls.argsFor(0)).toEqual([ 120 ]);
-    expect(console.log.calls.argsFor(1)).toEqual([ 256 ]);
-    expect(console.log.calls.argsFor(2)).toEqual([ 140 ]);
+    expect(console.log.calls.argsFor(0)).toEqual([120]);
+    expect(console.log.calls.argsFor(1)).toEqual([256]);
+    expect(console.log.calls.argsFor(2)).toEqual([140]);
   });
 
   it('should support dynamic scope', () => {
@@ -51,7 +41,7 @@ describe('StatementInterp', () => {
       const add3ButActuallyAdd100 = adder(3);
       log(add3ButActuallyAdd100(5));
     })()`);
-    expect(console.log.calls.argsFor(0)).toEqual([ 100 + 5 ]);
+    expect(console.log.calls.argsFor(0)).toEqual([100 + 5]);
 
     evalScript(`(() => {
       const x = 100;
@@ -60,7 +50,7 @@ describe('StatementInterp', () => {
       const add3 = adder(3);
       log(add3(39));
     })()`);
-    expect(console.log.calls.argsFor(1)).toEqual([ 100 + 39 ]);
+    expect(console.log.calls.argsFor(1)).toEqual([100 + 39]);
 
     expect(console.log.calls.count()).toEqual(2);
 

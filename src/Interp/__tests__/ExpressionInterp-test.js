@@ -9,16 +9,6 @@ import {
 import { makeClosure } from '../../Closure';
 import { setLexical } from '../../Options';
 
-jest.unmock('../index')
-    .unmock('../../typeFlags')
-    .unmock('../../Parser')
-    .unmock('../ExpressionInterp')
-    .unmock('../StatementInterp')
-    .unmock('../../Environment')
-    .unmock('../../Closure')
-    .unmock('../../Prims')
-    .unmock('../../Options');
-
 const parseAndGet1stExp = (code) => parse(code).body[0].expression;
 
 const evalCode = (code) => expInterp(parseAndGet1stExp(code), emptyEnv);
@@ -105,7 +95,7 @@ describe('ExpressionInterp', () => {
     ));
 
     expect(evalCodeWithEnv('(x) => fact(x + 12)', emptyEnv)).toEqual(makeClosure(
-      [ 'x' ],
+      ['x'],
       parseAndGet1stExp('fact(x + 12)'),
       emptyEnv,
     ));
@@ -262,8 +252,8 @@ describe('ExpressionInterp', () => {
     })());
 
     expect(console.log.calls.count()).toEqual(3); // eslint-disable-line no-console
-    expect(console.log.calls.argsFor(0)).toEqual([ 120 ]); // eslint-disable-line no-console
-    expect(console.log.calls.argsFor(1)).toEqual([ 256 ]); // eslint-disable-line no-console
-    expect(console.log.calls.argsFor(2)).toEqual([ 140 ]); // eslint-disable-line no-console
+    expect(console.log.calls.argsFor(0)).toEqual([120]); // eslint-disable-line no-console
+    expect(console.log.calls.argsFor(1)).toEqual([256]); // eslint-disable-line no-console
+    expect(console.log.calls.argsFor(2)).toEqual([140]); // eslint-disable-line no-console
   });
 });

@@ -34,7 +34,7 @@ const cleanupAst = (target) => {
       }
 
       const newVal = cleanupAst(val);
-      return [ key, newVal ];
+      return [key, newVal];
     });
   } else if (Array.isArray(target)) {
     return target.map(cleanupAst);

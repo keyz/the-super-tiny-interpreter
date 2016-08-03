@@ -7,7 +7,7 @@ const wrapNativeFunc = (params, func) => ({
 });
 
 const logFunc = wrapNativeFunc(
-  [ 'x' ],
+  ['x'],
   (x) => { console.log(x); }, // eslint-disable-line no-console
 );
 

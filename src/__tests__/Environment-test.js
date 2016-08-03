@@ -5,8 +5,6 @@ import {
   batchExtendEnv,
 } from '../Environment';
 
-jest.unmock('../Environment');
-
 describe('Environment', () => {
   it('has an empty env that contains `undefined`', () => {
     expect(lookupEnv('undefined', emptyEnv)).toBe(void 0);
@@ -20,12 +18,12 @@ describe('Environment', () => {
 
   it('should support shadowing correctly', () => {
     const data = [
-      [ 'foo', 0 ],
-      [ 'foo', 13 ],
+      ['foo', 0],
+      ['foo', 13],
     ];
 
     const env = data.reduce(
-      (res, [ name, val ]) => extendEnv(name, val, res),
+      (res, [name, val]) => extendEnv(name, val, res),
       emptyEnv,
     );
 
@@ -34,8 +32,8 @@ describe('Environment', () => {
 
   it('should batch extend stuff correctly', () => {
     const env = extendEnv('foo', 999, emptyEnv);
-    const keys = [ 'foo', 'bar', 'james', 'huang' ];
-    const vals = [ 1, 2, 3, 4 ];
+    const keys = ['foo', 'bar', 'james', 'huang'];
+    const vals = [1, 2, 3, 4];
     const extendedEnv = batchExtendEnv(keys, vals, env);
 
     expect(extendedEnv.size - emptyEnv.size).toBe(4);
@@ -45,8 +43,8 @@ describe('Environment', () => {
 
   it('should throw when arguments.length !== parameters.length', () => {
     const env = extendEnv('foo', 999, emptyEnv);
-    const keys = [ 'foo', 'bar', 'james', 'huang', 'yeah' ];
-    const vals = [ 1, 2, 3 ];
+    const keys = ['foo', 'bar', 'james', 'huang', 'yeah'];
+    const vals = [1, 2, 3];
     expect(() => { batchExtendEnv(keys, vals, env); }).toThrow();
   });
 });
